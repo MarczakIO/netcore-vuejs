@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SpaServices.Webpack;
+using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace MarczakIO.VueSPA.Web
 {
@@ -39,6 +41,7 @@ namespace MarczakIO.VueSPA.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseMvc(routes =>
@@ -46,10 +49,12 @@ namespace MarczakIO.VueSPA.Web
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
-                routes.MapSpaFallbackRoute(
-                    name: "spa-fallback",
-                    defaults: new { controller = "Home", action = "Index" });
+            app.Run(async (context) =>
+            {
+                context.Response.ContentType = "text/html";
+                await context.Response.SendFileAsync(Path.Combine(env.WebRootPath,"index.html"));
             });
         }
     }
