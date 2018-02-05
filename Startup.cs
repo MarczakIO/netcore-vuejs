@@ -36,10 +36,6 @@ namespace MarczakIO.VueSPA.Web
                     HotModuleReplacement = true
                 });
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
 
             app.UseDefaultFiles();
             app.UseStaticFiles();
@@ -48,7 +44,7 @@ namespace MarczakIO.VueSPA.Web
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller}/{action}/{id?}");
             });
 
             app.Run(async (context) =>
